@@ -363,8 +363,11 @@ Citizen.CreateThread(function()
 										end
 
 										if CanGoIn == true then
+											local VehicleProps = ESX.Game.GetVehicleProperties(PlayerVehicle)
+
 											TriggerServerEvent('esx_garaging:SetStored', VehiclePlate, true)
 											TriggerServerEvent('esx_garaging:SetGarage', VehiclePlate, Index)
+											TriggerServerEvent('esx_garaging:SetProps', VehicleProps)
 											DeleteVehicle(PlayerVehicle)
 
 											FreezeEntityPosition(PlayerPedId(), true)
