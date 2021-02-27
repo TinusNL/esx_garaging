@@ -40,6 +40,24 @@ AddEventHandler('esx_garaging:SetGarage', function(VehiclePlate, GarageId)
     MySQL.Sync.fetchAll('UPDATE owned_vehicles SET garage = '..GarageId..' WHERE plate = "'..VehiclePlate..'"')
 end)
 
+RegisterServerEvent('esx_garaging:SetProps')
+AddEventHandler('esx_garaging:SetProps', function(VehicleProps)
+    local xSource = source
+    local PlayerSteamId = ""
+
+    for Index, CurrentIdentifier in pairs(GetPlayerIdentifiers(source)) do
+        if string.sub(CurrentIdentifier, 1, string.len("steam:")) == "steam:" then
+            PlayerSteamId = CurrentIdentifier
+        end
+    end
+
+    local VehiclePropsEncoded = json.encode(VehicleProps)
+
+    MySQL.Sync.fetchAll('UPDATE owned_vehicles SET vehicle = @VehiclePropsEncoded WHERE plate = "'..VehicleProps.plate..'"', {
+        ["@VehiclePropsEncoded"] = VehiclePropsEncoded
+    })
+end)
+
 ESX.RegisterServerCallback('esx_garaging:GetVehicles', function(source, Callback)
     local xSource = source
     local PlayerSteamId = ""
