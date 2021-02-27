@@ -40,9 +40,21 @@ local PlayerGarages = {}
 local InsideGarage = nil
 local MenuOpened = false
 
+function UpdateBlips()
+	for Index, CurrentGarage in pairs(Config.Garages) do
+		if CheckGarageOwned(Index) then
+			SetBlipColour(CurrentGarage.Blip, 25)
+		else
+			SetBlipColour(CurrentGarage.Blip, 45)
+		end
+	end
+end
+
 function UpdatePlayerGarages()
 	ESX.TriggerServerCallback('esx_garaging:GetGarages', function(NewPlayerGarages)
 		PlayerGarages = NewPlayerGarages
+
+		UpdateBlips()
 	end)
 end
 
@@ -160,16 +172,6 @@ function LeaveGarage()
 	FreezeEntityPosition(PlayerPedId(), false)
 end
 
-function UpdateBlips()
-	for Index, CurrentGarage in pairs(Config.Garages) do
-		if CheckGarageOwned(Index) then
-			SetBlipColour(CurrentGarage.Blip, 25)
-		else
-			SetBlipColour(CurrentGarage.Blip, 45)
-		end
-	end
-end
-
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
@@ -192,10 +194,6 @@ Citizen.CreateThread(function()
 				AddTextComponentString(GarageTypeInfo.TypeBlip.BlipInfo)
 				EndTextCommandSetBlipName(CurrentGarage["Blip"])
 			end
-
-			Citizen.Wait(1000)
-
-			UpdateBlips()
 
 			break
 		end
@@ -375,7 +373,6 @@ Citizen.CreateThread(function()
 												if Status == true then
 													ESX.ShowNotification(Translations[Config.Translation]["SUCCES_BUY"], false, true, 90)
 													UpdatePlayerGarages()
-													UpdateBlips()
 												else
 													ESX.ShowNotification(Translations[Config.Translation]["MONEY_BUY"]..GarageTypeInfo.TypePrice..",-", false, true, 90)
 												end
