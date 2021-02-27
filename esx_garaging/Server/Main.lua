@@ -52,7 +52,15 @@ ESX.RegisterServerCallback('esx_garaging:GetVehicles', function(source, Callback
 
     local SQLReturn = MySQL.Sync.fetchAll('SELECT * FROM owned_vehicles WHERE owner = "'..PlayerSteamId..'"')
 
-    Callback(SQLReturn)
+    local NewSQL = {}
+
+    for Index, CurrentVehicle in pairs(SQLReturn) do
+        if CurrentVehicle.type == "car" then 
+            NewSQL[#NewSQL + 1] = CurrentVehicle
+        end
+    end
+
+    Callback(NewSQL)
 end)
 
 ESX.RegisterServerCallback('esx_garaging:GetGarages', function(source, Callback)
