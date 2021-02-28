@@ -26,8 +26,3 @@ server_scripts {
 	-- Code
 	'Server/Main.lua',
 }
-
-dependencies {
-	'esx_vehicleshop',
-	'esx_lscustom'
-}
