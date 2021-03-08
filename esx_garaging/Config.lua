@@ -17,6 +17,7 @@ Config = {
     },
 
     MoneyType = true, --True= Bank | False= Cash
+    SellPercentage = 75, -- Percentage you get back when selling a garage
 
     GarageTypes = { -- Garage types that can be used
         {
