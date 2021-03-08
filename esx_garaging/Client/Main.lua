@@ -85,7 +85,7 @@ function SpawnVehicle(VehiclesInfo, SpawnCoords, SpawnHeading, Networked, Stored
 		TimeWaited = TimeWaited + 100
 
 		if TimeWaited >= 5000 then
-			ESX.ShowNotification(Translations[Config.Translation]["SPAWN_ERROR"], false, true, 90)
+			ESX.ShowNotification(Translations[Config.Translation]["ERROR_SPAWN"], false, true, 140)
 			break
 		end
 	end
@@ -153,15 +153,6 @@ function LeaveGarage()
 		end
 	end
 
-	for Index, CurrentPlayer in pairs(ESX.Game.GetPlayers()) do
-		local CurrentPed = GetPlayerPed(CurrentPlayer)
-
-		if CurrentPed ~= PlayerPedId() then
-			ResetEntityAlpha(CurrentPed, 255, 0)
-			SetEntityCollision(CurrentPed, true, true)
-		end
-	end
-
 	BusyspinnerOff()
 
 	SetEntityCoords(PlayerPedId(), InsideGarage.GarageInfo.DoorPos.x, InsideGarage.GarageInfo.DoorPos.y, InsideGarage.GarageInfo.DoorPos.z, 0.0, 0.0, 0.0, false)
@@ -170,6 +161,8 @@ function LeaveGarage()
 end
 
 function UpdateBlips()
+    Citizen.Wait(1000)
+
 	for Index, CurrentGarage in pairs(Config.Garages) do
 		if CheckGarageOwned(Index) then
 			SetBlipColour(CurrentGarage.Blip, 25)
@@ -201,8 +194,6 @@ Citizen.CreateThread(function()
 				AddTextComponentString(GarageTypeInfo.TypeBlip.BlipInfo)
 				EndTextCommandSetBlipName(CurrentGarage["Blip"])
 			end
-
-			Citizen.Wait(1000)
 
 			UpdateBlips()
 
@@ -260,15 +251,6 @@ Citizen.CreateThread(function()
 
 									LoadGarageVehicles(Index, GarageTypeInfo)
 
-									for Index, CurrentPlayer in pairs(ESX.Game.GetPlayers()) do
-										local CurrentPed = GetPlayerPed(CurrentPlayer)
-								
-										if CurrentPed ~= PlayerPedId() then
-											SetEntityAlpha(CurrentPed, 0, 0)
-											SetEntityCollision(CurrentPed, false, true)
-										end
-									end
-
 									BusyspinnerOff()
 
 									SetEntityCoords(PlayerPedId(), GarageTypeInfo.TypeDoor.x, GarageTypeInfo.TypeDoor.y, GarageTypeInfo.TypeDoor.z, 0.0, 0.0, 0.0, false)
@@ -299,24 +281,25 @@ Citizen.CreateThread(function()
 											title = Translations[Config.Translation]["MENU_BUY"],
 											align = "bottom-left",
 											elements = {
-												{ label = Translations[Config.Translation]["YES_BUY"]..' | <span style="color:green;"> €'..GarageTypeInfo.TypePrice..",-</span>", value = "yes" },
-												{ label = Translations[Config.Translation]["NO_BUY"], value = "no" }
+												{ label = Translations[Config.Translation]["YES"]..' | <span style="color:green;"> €'..GarageTypeInfo.TypePrice..",-</span>", value = "yes" },
+												{ label = Translations[Config.Translation]["NO"], value = "no" }
 											}
 										},
 										function(Data, BuyMenu)
+                                            BuyMenu.close()
+
 											if Data.current.value == "yes" then
 												ESX.TriggerServerCallback('esx_garaging:BuyGarage', function(Status)
 													if Status == true then
-														ESX.ShowNotification(Translations[Config.Translation]["SUCCES_BUY"], false, true, 90)
+														ESX.ShowNotification(Translations[Config.Translation]["SUCCES_BUY"], false, true, 140)
 														UpdatePlayerGarages()
 														UpdateBlips()
 													else
-														ESX.ShowNotification(Translations[Config.Translation]["MONEY_BUY"]..GarageTypeInfo.TypePrice..",-", false, true, 90)
+														ESX.ShowNotification(Translations[Config.Translation]["MONEY_BUY"]..GarageTypeInfo.TypePrice..",-", false, true, 140)
 													end
 												end, Index)
 											end
 
-											BuyMenu.close()
 											MenuOpened = false
 										end, 
 										function(Data, BuyMenu)
@@ -329,101 +312,90 @@ Citizen.CreateThread(function()
 						end
 					end
 				else
-					if CheckGarageOwned(Index) then
-						if Vdist2(PlayerCoords, CurrentGarage.SpawnPos) <= 100 then
-							DrawMarker(
-								6,
-								CurrentGarage.SpawnPos.x, CurrentGarage.SpawnPos.y, CurrentGarage.SpawnPos.z,
-								0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-								1.5, 1.5, 1.5,
-								255, 0, 0, 155,
-								false, true, 2, nil, nil, false
-							)
+					if Vdist2(PlayerCoords, CurrentGarage.SpawnPos) <= 100 then
+						DrawMarker(
+							6,
+							CurrentGarage.SpawnPos.x, CurrentGarage.SpawnPos.y, CurrentGarage.SpawnPos.z,
+							0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+							1.5, 1.5, 1.5,
+							255, 0, 0, 155,
+							false, true, 2, nil, nil, false
+						)
 
-							DrawMarker(
-								36,
-								CurrentGarage.SpawnPos.x, CurrentGarage.SpawnPos.y, CurrentGarage.SpawnPos.z,
-								0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-								1.25, 1.25, 1.25,
-								255, 0, 0, 155,
-								false, true, 2, nil, nil, false
-							)
+						DrawMarker(
+							36,
+							CurrentGarage.SpawnPos.x, CurrentGarage.SpawnPos.y, CurrentGarage.SpawnPos.z,
+							0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+							1.25, 1.25, 1.25,
+							255, 0, 0, 155,
+							false, true, 2, nil, nil, false
+						)
 
-							if Vdist2(PlayerCoords, CurrentGarage.SpawnPos) <= 2.0 then
-								ESX.ShowHelpNotification(Translations[Config.Translation]["ENTER_GARAGE"], true, false, 1)
+						if Vdist2(PlayerCoords, CurrentGarage.SpawnPos) <= 2.0 then
+							ESX.ShowHelpNotification(Translations[Config.Translation]["ENTER_GARAGE"], true, false, 1)
 
-								if IsControlJustPressed(1, 51) then
-									local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
+							if IsControlJustPressed(1, 51) then
+								local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
 
-									ESX.TriggerServerCallback('esx_garaging:GetVehicles', function(PlayerVehicles)
-										local VehiclesInGarage = 0
-										local OwnedVehicle = false
-										local CanGoIn = false
+								ESX.TriggerServerCallback('esx_garaging:GetVehicles', function(PlayerVehicles)
+									local VehiclesInGarage = 0
+									local OwnedVehicle = false
+									local CanGoIn = false
 
-										for VehicleIndex, CurrentVehicle in pairs(PlayerVehicles) do
-											if CurrentVehicle.garage == Index then
-												VehiclesInGarage = VehiclesInGarage + 1
-
-												if CurrentVehicle.plate.." " == VehiclePlate then
-													CanGoIn = true
-												end
-											end
+									for VehicleIndex, CurrentVehicle in pairs(PlayerVehicles) do
+										if CurrentVehicle.garage == Index then
+											VehiclesInGarage = VehiclesInGarage + 1
 
 											if CurrentVehicle.plate.." " == VehiclePlate then
-												OwnedVehicle = true
-											end
-										end
-
-										if OwnedVehicle == true then
-											local GarageTypeInfo = GetTypeInfo(CurrentGarage.GarageType)
-
-											if VehiclesInGarage < #GarageTypeInfo.TypeLocations and CanGoIn == false then
 												CanGoIn = true
 											end
-
-											if CanGoIn == true then
-												local VehicleProps = ESX.Game.GetVehicleProperties(PlayerVehicle)
-
-												TriggerServerEvent('esx_garaging:SetStored', VehiclePlate, true)
-												TriggerServerEvent('esx_garaging:SetGarage', VehiclePlate, Index)
-												TriggerServerEvent('esx_garaging:SetProps', VehicleProps)
-												DeleteVehicle(PlayerVehicle)
-
-												FreezeEntityPosition(PlayerPedId(), true)
-
-												BeginTextCommandBusyspinnerOn("LOADING_ENTER_GARAGE")
-												EndTextCommandBusyspinnerOn(4)
-
-												InsideGarage = {}
-												InsideGarage["InsideDoor"] = GarageTypeInfo.TypeDoor
-												InsideGarage["InsideLaptop"] = GarageTypeInfo.TypeLaptop
-												InsideGarage["GarageID"] = Index
-												InsideGarage["GarageInfo"] = CurrentGarage
-
-												LoadGarageVehicles(Index, GarageTypeInfo)
-
-												for Index, CurrentPlayer in pairs(ESX.Game.GetPlayers()) do
-													local CurrentPed = GetPlayerPed(CurrentPlayer)
-											
-													if CurrentPed ~= PlayerPedId() then
-														SetEntityAlpha(CurrentPed, 0, 0)
-														SetEntityCollision(CurrentPed, false, true)
-													end
-												end
-
-												BusyspinnerOff()
-
-												SetEntityCoords(PlayerPedId(), GarageTypeInfo.TypeDoor.x, GarageTypeInfo.TypeDoor.y, GarageTypeInfo.TypeDoor.z, 0.0, 0.0, 0.0, false)
-
-												FreezeEntityPosition(PlayerPedId(), false)
-											else
-												ESX.ShowNotification(Translations[Config.Translation]["NO_SPACE"], false, true, 90)
-											end
-										else
-											ESX.ShowNotification(Translations[Config.Translation]["NOT_OWNED"], false, true, 90)
 										end
-									end)
-								end
+
+										if CurrentVehicle.plate.." " == VehiclePlate then
+											OwnedVehicle = true
+										end
+									end
+
+									if OwnedVehicle == true then
+										local GarageTypeInfo = GetTypeInfo(CurrentGarage.GarageType)
+
+										if VehiclesInGarage < #GarageTypeInfo.TypeLocations and CanGoIn == false then
+											CanGoIn = true
+										end
+
+										if CanGoIn == true then
+											local VehicleProps = ESX.Game.GetVehicleProperties(PlayerVehicle)
+
+											TriggerServerEvent('esx_garaging:SetStored', VehiclePlate, true)
+											TriggerServerEvent('esx_garaging:SetGarage', VehiclePlate, Index)
+											TriggerServerEvent('esx_garaging:SetProps', VehicleProps)
+											DeleteVehicle(PlayerVehicle)
+
+											FreezeEntityPosition(PlayerPedId(), true)
+
+											BeginTextCommandBusyspinnerOn("LOADING_ENTER_GARAGE")
+											EndTextCommandBusyspinnerOn(4)
+
+											InsideGarage = {}
+											InsideGarage["InsideDoor"] = GarageTypeInfo.TypeDoor
+											InsideGarage["InsideLaptop"] = GarageTypeInfo.TypeLaptop
+											InsideGarage["GarageID"] = Index
+											InsideGarage["GarageInfo"] = CurrentGarage
+
+											LoadGarageVehicles(Index, GarageTypeInfo)
+
+											BusyspinnerOff()
+
+											SetEntityCoords(PlayerPedId(), GarageTypeInfo.TypeDoor.x, GarageTypeInfo.TypeDoor.y, GarageTypeInfo.TypeDoor.z, 0.0, 0.0, 0.0, false)
+
+											FreezeEntityPosition(PlayerPedId(), false)
+										else
+											ESX.ShowNotification(Translations[Config.Translation]["NO_SPACE"], false, true, 140)
+										end
+									else
+										ESX.ShowNotification(Translations[Config.Translation]["NOT_OWNED"], false, true, 140)
+									end
+								end)
 							end
 						end
 					end
@@ -490,55 +462,116 @@ Citizen.CreateThread(function()
 
 					if IsControlJustPressed(1, 51) and MenuOpened == false then
 						MenuOpened = true
-						ESX.TriggerServerCallback('esx_garaging:GetVehicles', function(PlayerVehicles)
-							local MenuElements = {}
+                        ESX.UI.Menu.Open("default", GetCurrentResourceName(), "laptop_menu", {
+                            title = Translations[Config.Translation]["MENU_LAPTOP"],
+                            align = "bottom-left",
+                            elements = {
+                                {label= Translations[Config.Translation]["IMPOUND_LAPTOP"], value= "impound"},
+                                {label= '<span style="color:red;">'..Translations[Config.Translation]["SELL_LAPTOP"]..'</span>', value= "sell"}
+                            }
+                        },
+                        function(Data, LaptopMenu)
+                            LaptopMenu.close()
+                            if Data.current.value == "sell" then
+                                local GarageTypeInfo = GetTypeInfo(InsideGarage.GarageInfo.GarageType)
 
-							for Index, CurrentVehicle in pairs(PlayerVehicles) do
-								if CurrentVehicle.stored == false and CurrentVehicle.garage == InsideGarage.GarageID then
-									local VehicleData = json.decode(CurrentVehicle.vehicle)
-									local VehicleName = GetDisplayNameFromVehicleModel(VehicleData.model)
+                                ESX.UI.Menu.Open("default", GetCurrentResourceName(), "sell_menu", {
+                                    title = Translations[Config.Translation]["SELL_LAPTOP"].." | "..Translations[Config.Translation]["MENU_LAPTOP"],
+                                    align = "bottom-left",
+                                    elements = {
+                                        { label = Translations[Config.Translation]["YES"]..' | <span style="color:green;"> €'..math.floor((GarageTypeInfo.TypePrice / 100) * Config.SellPercentage)..",-</span>", value = "yes" },
+                                        { label = Translations[Config.Translation]["NO"], value = "no" }
+                                    }
+                                },
+                                function(Data, SellMenu)
+                                    SellMenu.close()
+                                    if Data.current.value == "yes" then
+                                        ESX.TriggerServerCallback('esx_garaging:GetVehicles', function(PlayerVehicles)
+                                            local VehiclesInGarage = 0
 
-									if VehicleName == nil then
-										VehicleName = '<span style="color:red;">'..Translations[Config.Translation]["NAME_LAPTOP"]..'</span>'
-									end
+                                            for VehicleIndex, CurrentVehicle in pairs(PlayerVehicles) do
+                                                if CurrentVehicle.garage == InsideGarage.GarageID then
+                                                    VehiclesInGarage = VehiclesInGarage + 1
+                                                end
+                                            end
 
-									table.insert(MenuElements, #MenuElements + 1, { label = VehicleName.." | "..CurrentVehicle.plate, value = CurrentVehicle.plate })
-								end
-							end
+                                            if VehiclesInGarage == 0 then
+                                                ESX.TriggerServerCallback('esx_garaging:SellGarage', function()
+                                                    ESX.ShowNotification(Translations[Config.Translation]["SUCCES_LAPTOP"], false, true, 140)
+                                                    LeaveGarage()
+                                                    InsideGarage = nil
+                                                    UpdatePlayerGarages()
+                                                    UpdateBlips()
+												end, InsideGarage.GarageID)
+                                            else
+                                                ESX.ShowNotification(Translations[Config.Translation]["EMPTY_LAPTOP"], false, true, 140)
+                                            end
+                                        end)
+                                    end
 
-							ESX.UI.Menu.Open("default", GetCurrentResourceName(), "laptop_menu", {
-								title = Translations[Config.Translation]["MENU_LAPTOP"],
-								align = "bottom-left",
-								elements = MenuElements
-							},
-							function(Data, LaptopMenu)
-								ESX.TriggerServerCallback('esx_garaging:ReturnVehicle', function(Status)
-									if Status == true then
-										ESX.ShowNotification(Translations[Config.Translation]["SUCCES_LAPTOP"], false, true, 90)
+                                    MenuOpened = false
+                                end, 
+                                function(Data, SellMenu)
+                                    SellMenu.close()
+                                    MenuOpened = false
+                                end)
+                            else
+                                ESX.TriggerServerCallback('esx_garaging:GetVehicles', function(PlayerVehicles)
+                                    local MenuElements = {}
 
-										TriggerServerEvent('esx_garaging:SetStored', Data.current.value, true)
+                                    for Index, CurrentVehicle in pairs(PlayerVehicles) do
+                                        if CurrentVehicle.stored == false and CurrentVehicle.garage == InsideGarage.GarageID then
+                                            local VehicleData = json.decode(CurrentVehicle.vehicle)
+                                            local VehicleName = GetDisplayNameFromVehicleModel(VehicleData.model)
 
-										local GarageTypeInfo = GetTypeInfo(InsideGarage.GarageInfo.GarageType)
+                                            if VehicleName == nil then
+                                                VehicleName = '<span style="color:red;">'..Translations[Config.Translation]["NAME_LAPTOP"]..'</span>'
+                                            end
 
-										for Index, CurrentVehicle in pairs(InsideGarage.Vehicles) do
-											if DoesEntityExist(CurrentVehicle.VehicleEntity) then
-												DeleteVehicle(CurrentVehicle.VehicleEntity)
-											end
-										end
+                                            table.insert(MenuElements, #MenuElements + 1, { label = VehicleName.." | "..CurrentVehicle.plate, value = CurrentVehicle.plate })
+                                        end
+                                    end
 
-										LoadGarageVehicles(InsideGarage.GarageID, GarageTypeInfo)
-									else
-										ESX.ShowNotification(Translations[Config.Translation]["MONEY_LAPTOP"]..Config.Laptop.MoneyAmount..",-", false, true, 90)
-									end
-								end)
+                                    ESX.UI.Menu.Open("default", GetCurrentResourceName(), "impound_menu", {
+                                        title = Translations[Config.Translation]["IMPOUND_LAPTOP"].." | "..Translations[Config.Translation]["MENU_LAPTOP"],
+                                        align = "bottom-left",
+                                        elements = MenuElements
+                                    },
+                                    function(Data, ImpoundMenu)
+                                        ImpoundMenu.close()
 
-								LaptopMenu.close()
-								MenuOpened = false
-							end, 
-							function(Data, LaptopMenu)
-								LaptopMenu.close()
-								MenuOpened = false
-							end)
+                                        ESX.TriggerServerCallback('esx_garaging:ReturnVehicle', function(Status)
+                                            if Status == true then
+                                                ESX.ShowNotification(Translations[Config.Translation]["SUCCES_LAPTOP"], false, true, 140)
+
+                                                TriggerServerEvent('esx_garaging:SetStored', Data.current.value, true)
+
+                                                local GarageTypeInfo = GetTypeInfo(InsideGarage.GarageInfo.GarageType)
+
+                                                for Index, CurrentVehicle in pairs(InsideGarage.Vehicles) do
+                                                    if DoesEntityExist(CurrentVehicle.VehicleEntity) then
+                                                        DeleteVehicle(CurrentVehicle.VehicleEntity)
+                                                    end
+                                                end
+
+                                                LoadGarageVehicles(InsideGarage.GarageID, GarageTypeInfo)
+                                            else
+                                                ESX.ShowNotification(Translations[Config.Translation]["MONEY_LAPTOP"]..Config.Laptop.MoneyAmount..",-", false, true, 140)
+                                            end
+                                        end)
+
+                                        MenuOpened = false
+                                    end, 
+                                    function(Data, ImpoundMenu)
+                                        ImpoundMenu.close()
+                                        MenuOpened = false
+                                    end)
+                                end, 
+                                function(Data, LaptopMenu)
+                                    LaptopMenu.close()
+                                    MenuOpened = false
+                                end)
+                            end
 						end)
 					end
 				end
@@ -551,14 +584,20 @@ Citizen.CreateThread(function()
 							ESX.ShowHelpNotification(Translations[Config.Translation]["LEAVE_GARAGE"], true, false, 1)
 
 							if IsControlJustPressed(1, 51) then
-								LeaveGarage()
+                                local ClosestVehicle, VehicleDistance = ESX.Game.GetClosestVehicle(InsideGarage.GarageInfo.SpawnPos)
 
-								local SpawnedVehicle = SpawnVehicle(json.decode(CurrentVehicle.VehicleData.vehicle), InsideGarage.GarageInfo.SpawnPos, InsideGarage.GarageInfo.SpawnHeading, true)
-								TaskWarpPedIntoVehicle(PlayerPedId(), SpawnedVehicle, -1)
+                                if VehicleDistance >= 7.5 then
+                                    LeaveGarage()
 
-								InsideGarage = nil
+                                    local SpawnedVehicle = SpawnVehicle(json.decode(CurrentVehicle.VehicleData.vehicle), InsideGarage.GarageInfo.SpawnPos, InsideGarage.GarageInfo.SpawnHeading, true)
+                                    TaskWarpPedIntoVehicle(PlayerPedId(), SpawnedVehicle, -1)
 
-								TriggerServerEvent('esx_garaging:SetStored', GetVehicleNumberPlateText(SpawnedVehicle), false)
+                                    InsideGarage = nil
+
+                                    TriggerServerEvent('esx_garaging:SetStored', GetVehicleNumberPlateText(SpawnedVehicle), false)
+                                else
+                                    ESX.ShowNotification(Translations[Config.Translation]["BLOCK_SPAWN"], false, true, 140)
+                                end
 							end
 						end
 					end
