@@ -149,3 +149,24 @@ ESX.RegisterServerCallback('esx_garaging:ReturnVehicle', function(source, Callba
         end
     end
 end)
+
+ESX.RegisterServerCallback('esx_garaging:SellGarage', function(source, Callback, GarageID)
+    local xSource = source
+    local xPlayer = ESX.GetPlayerFromId(xSource)
+
+    local PlayerIdentifier = ""
+    local CurrentGarage = Config.Garages[GarageID]
+    local GarageTypeInfo = GetTypeInfo(CurrentGarage.GarageType)
+    local MoneyToPay = math.floor((GarageTypeInfo.TypePrice / 100) * Config.SellPercentage)
+
+    for Index, CurrentIdentifier in pairs(GetPlayerIdentifiers(source)) do
+        if string.sub(CurrentIdentifier, 1, string.len("steam:")) == "steam:" then
+            PlayerIdentifier = CurrentIdentifier
+        end
+    end
+
+    xPlayer.addAccountMoney('bank', MoneyToPay)
+    MySQL.Sync.fetchAll('DELETE FROM owned_garages WHERE owner = "'..PlayerIdentifier..'" AND id = '..GarageID..'')
+
+    Callback()
+end)
