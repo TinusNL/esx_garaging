@@ -123,7 +123,7 @@ Config = {
         {GarageType = "4Car", DoorPos = vector3(-1135.36, 2682.12, 18.35), SpawnPos = vector3(-1133.86, 2695.87, 18.8), SpawnHeading = 142.13},
         {GarageType = "4Car", DoorPos = vector3(1860.01, 2719.65, 45.86), SpawnPos = vector3(1859.29, 2713.12, 45.94), SpawnHeading = 113.2},
         {GarageType = "4Car", DoorPos = vector3(905.83, 3586.77, 33.4), SpawnPos = vector3(903.24, 3589.93, 33.21), SpawnHeading = 266.89},
-        {GarageType = "4Car", DoorPos = vector3(-359.49, 6062.75, 31.5), SpawnPos = vector3(-357.14, 6069.01, 31.5), SpawnHeading = 44.01},
+        {GarageType = "4Car", DoorPos = vector3(-359.49, 6062.75, 31.5), SpawnPos = vector3(-357.08, 6069.4, 31.5), SpawnHeading = 44.01},
 
         -- 6 Car
         {GarageType = "6Car", DoorPos = vector3(116.33, -1088.08, 29.22), SpawnPos = vector3(132.49, -1081.42, 29.19), SpawnHeading = 358.79},
