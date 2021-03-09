@@ -9,9 +9,9 @@
 
 Translations['EN'] = {
     ["BUY_GARAGE"] = "Press ~INPUT_CONTEXT~ to buy the garage!",
-    ["MENU_BUY"] = "Buying Garage",
-    ["MONEY_BUY"] = "You ~r~don't~w~ have enough money! You need: ~r~€",
-    ["SUCCES_BUY"] = "The garage has ~g~succesfully~w~ been bought!",
+	  ["MENU_BUY"] = "Buying Garage",
+	  ["MONEY_BUY"] = "You ~r~don't~w~ have enough money! You need: ~r~€",
+	  ["SUCCES_BUY"] = "The garage has ~g~succesfully~w~ been bought!",
 
     ["ENTER_GARAGE"] = "Press ~INPUT_CONTEXT~ to enter the garage!",
     ["LOADING_ENTER_GARAGE"] = "Entering garage...",
@@ -19,7 +19,7 @@ Translations['EN'] = {
     ["LOADING_LEAVE_GARAGE"] = "Leaving garage...",
 
     ["YES"] = "Yes",
-    ["NO"] = "No",
+	  ["NO"] = "No",
 
     ["ERROR_SPAWN"] = "~r~Something went wrong while spawning the vehicle!",
     ["BLOCK_SPAWN"] = "~r~The garage door is blocked! Make sure there is enough space to spawn your vehicle.",
