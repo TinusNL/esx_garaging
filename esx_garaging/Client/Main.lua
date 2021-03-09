@@ -312,93 +312,95 @@ Citizen.CreateThread(function()
 						end
 					end
 				else
-					if Vdist2(PlayerCoords, CurrentGarage.SpawnPos) <= 100 then
-						DrawMarker(
-							6,
-							CurrentGarage.SpawnPos.x, CurrentGarage.SpawnPos.y, CurrentGarage.SpawnPos.z,
-							0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-							1.5, 1.5, 1.5,
-							255, 0, 0, 155,
-							false, true, 2, nil, nil, false
-						)
+                    if CheckGarageOwned(Index) then
+                        if Vdist2(PlayerCoords, CurrentGarage.SpawnPos) <= 100 then
+                            DrawMarker(
+                                6,
+                                CurrentGarage.SpawnPos.x, CurrentGarage.SpawnPos.y, CurrentGarage.SpawnPos.z,
+                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                1.5, 1.5, 1.5,
+                                255, 0, 0, 155,
+                                false, true, 2, nil, nil, false
+                            )
 
-						DrawMarker(
-							36,
-							CurrentGarage.SpawnPos.x, CurrentGarage.SpawnPos.y, CurrentGarage.SpawnPos.z,
-							0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-							1.25, 1.25, 1.25,
-							255, 0, 0, 155,
-							false, true, 2, nil, nil, false
-						)
+                            DrawMarker(
+                                36,
+                                CurrentGarage.SpawnPos.x, CurrentGarage.SpawnPos.y, CurrentGarage.SpawnPos.z,
+                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                1.25, 1.25, 1.25,
+                                255, 0, 0, 155,
+                                false, true, 2, nil, nil, false
+                            )
 
-						if Vdist2(PlayerCoords, CurrentGarage.SpawnPos) <= 2.0 then
-							ESX.ShowHelpNotification(Translations[Config.Translation]["ENTER_GARAGE"], true, false, 1)
+                            if Vdist2(PlayerCoords, CurrentGarage.SpawnPos) <= 2.0 then
+                                ESX.ShowHelpNotification(Translations[Config.Translation]["ENTER_GARAGE"], true, false, 1)
 
-							if IsControlJustPressed(1, 51) then
-								local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
+                                if IsControlJustPressed(1, 51) then
+                                    local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
 
-								ESX.TriggerServerCallback('esx_garaging:GetVehicles', function(PlayerVehicles)
-									local VehiclesInGarage = 0
-									local OwnedVehicle = false
-									local CanGoIn = false
+                                    ESX.TriggerServerCallback('esx_garaging:GetVehicles', function(PlayerVehicles)
+                                        local VehiclesInGarage = 0
+                                        local OwnedVehicle = false
+                                        local CanGoIn = false
 
-									for VehicleIndex, CurrentVehicle in pairs(PlayerVehicles) do
-										if CurrentVehicle.garage == Index then
-											VehiclesInGarage = VehiclesInGarage + 1
+                                        for VehicleIndex, CurrentVehicle in pairs(PlayerVehicles) do
+                                            if CurrentVehicle.garage == Index then
+                                                VehiclesInGarage = VehiclesInGarage + 1
 
-											if CurrentVehicle.plate.." " == VehiclePlate then
-												CanGoIn = true
-											end
-										end
+                                                if CurrentVehicle.plate.." " == VehiclePlate then
+                                                    CanGoIn = true
+                                                end
+                                            end
 
-										if CurrentVehicle.plate.." " == VehiclePlate then
-											OwnedVehicle = true
-										end
-									end
+                                            if CurrentVehicle.plate.." " == VehiclePlate then
+                                                OwnedVehicle = true
+                                            end
+                                        end
 
-									if OwnedVehicle == true then
-										local GarageTypeInfo = GetTypeInfo(CurrentGarage.GarageType)
+                                        if OwnedVehicle == true then
+                                            local GarageTypeInfo = GetTypeInfo(CurrentGarage.GarageType)
 
-										if VehiclesInGarage < #GarageTypeInfo.TypeLocations and CanGoIn == false then
-											CanGoIn = true
-										end
+                                            if VehiclesInGarage < #GarageTypeInfo.TypeLocations and CanGoIn == false then
+                                                CanGoIn = true
+                                            end
 
-										if CanGoIn == true then
-											local VehicleProps = ESX.Game.GetVehicleProperties(PlayerVehicle)
+                                            if CanGoIn == true then
+                                                local VehicleProps = ESX.Game.GetVehicleProperties(PlayerVehicle)
 
-											TriggerServerEvent('esx_garaging:SetStored', VehiclePlate, true)
-											TriggerServerEvent('esx_garaging:SetGarage', VehiclePlate, Index)
-											TriggerServerEvent('esx_garaging:SetProps', VehicleProps)
-											DeleteVehicle(PlayerVehicle)
+                                                TriggerServerEvent('esx_garaging:SetStored', VehiclePlate, true)
+                                                TriggerServerEvent('esx_garaging:SetGarage', VehiclePlate, Index)
+                                                TriggerServerEvent('esx_garaging:SetProps', VehicleProps)
+                                                DeleteVehicle(PlayerVehicle)
 
-											FreezeEntityPosition(PlayerPedId(), true)
+                                                FreezeEntityPosition(PlayerPedId(), true)
 
-											BeginTextCommandBusyspinnerOn("LOADING_ENTER_GARAGE")
-											EndTextCommandBusyspinnerOn(4)
+                                                BeginTextCommandBusyspinnerOn("LOADING_ENTER_GARAGE")
+                                                EndTextCommandBusyspinnerOn(4)
 
-											InsideGarage = {}
-											InsideGarage["InsideDoor"] = GarageTypeInfo.TypeDoor
-											InsideGarage["InsideLaptop"] = GarageTypeInfo.TypeLaptop
-											InsideGarage["GarageID"] = Index
-											InsideGarage["GarageInfo"] = CurrentGarage
+                                                InsideGarage = {}
+                                                InsideGarage["InsideDoor"] = GarageTypeInfo.TypeDoor
+                                                InsideGarage["InsideLaptop"] = GarageTypeInfo.TypeLaptop
+                                                InsideGarage["GarageID"] = Index
+                                                InsideGarage["GarageInfo"] = CurrentGarage
 
-											LoadGarageVehicles(Index, GarageTypeInfo)
+                                                LoadGarageVehicles(Index, GarageTypeInfo)
 
-											BusyspinnerOff()
+                                                BusyspinnerOff()
 
-											SetEntityCoords(PlayerPedId(), GarageTypeInfo.TypeDoor.x, GarageTypeInfo.TypeDoor.y, GarageTypeInfo.TypeDoor.z, 0.0, 0.0, 0.0, false)
+                                                SetEntityCoords(PlayerPedId(), GarageTypeInfo.TypeDoor.x, GarageTypeInfo.TypeDoor.y, GarageTypeInfo.TypeDoor.z, 0.0, 0.0, 0.0, false)
 
-											FreezeEntityPosition(PlayerPedId(), false)
-										else
-											ESX.ShowNotification(Translations[Config.Translation]["NO_SPACE"], false, true, 140)
-										end
-									else
-										ESX.ShowNotification(Translations[Config.Translation]["NOT_OWNED"], false, true, 140)
-									end
-								end)
-							end
-						end
-					end
+                                                FreezeEntityPosition(PlayerPedId(), false)
+                                            else
+                                                ESX.ShowNotification(Translations[Config.Translation]["NO_SPACE"], false, true, 140)
+                                            end
+                                        else
+                                            ESX.ShowNotification(Translations[Config.Translation]["NOT_OWNED"], false, true, 140)
+                                        end
+                                    end)
+                                end
+                            end
+                        end
+                    end
 				end
 			end
 		end
