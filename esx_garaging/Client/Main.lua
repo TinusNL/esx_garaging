@@ -153,6 +153,15 @@ function LeaveGarage()
 		end
 	end
 
+    for Index, CurrentPlayer in pairs(ESX.Game.GetPlayers()) do
+		local CurrentPed = GetPlayerPed(CurrentPlayer)
+
+		if CurrentPed ~= PlayerPedId() then
+			ResetEntityAlpha(CurrentPed, 255, 0)
+			SetEntityCollision(CurrentPed, true, true)
+		end
+	end
+
 	BusyspinnerOff()
 
 	SetEntityCoords(PlayerPedId(), InsideGarage.GarageInfo.DoorPos.x, InsideGarage.GarageInfo.DoorPos.y, InsideGarage.GarageInfo.DoorPos.z, 0.0, 0.0, 0.0, false)
@@ -250,6 +259,15 @@ Citizen.CreateThread(function()
 									InsideGarage["GarageInfo"] = CurrentGarage
 
 									LoadGarageVehicles(Index, GarageTypeInfo)
+
+                                    for Index, CurrentPlayer in pairs(ESX.Game.GetPlayers()) do
+										local CurrentPed = GetPlayerPed(CurrentPlayer)
+								
+										if CurrentPed ~= PlayerPedId() then
+											SetEntityAlpha(CurrentPed, 0, 0)
+											SetEntityCollision(CurrentPed, false, true)
+										end
+									end
 
 									BusyspinnerOff()
 
@@ -384,6 +402,15 @@ Citizen.CreateThread(function()
                                                 InsideGarage["GarageInfo"] = CurrentGarage
 
                                                 LoadGarageVehicles(Index, GarageTypeInfo)
+
+                                                for Index, CurrentPlayer in pairs(ESX.Game.GetPlayers()) do
+													local CurrentPed = GetPlayerPed(CurrentPlayer)
+											
+													if CurrentPed ~= PlayerPedId() then
+														SetEntityAlpha(CurrentPed, 0, 0)
+														SetEntityCollision(CurrentPed, false, true)
+													end
+												end
 
                                                 BusyspinnerOff()
 
