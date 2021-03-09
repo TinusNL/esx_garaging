@@ -525,13 +525,17 @@ Citizen.CreateThread(function()
                                             end
 
                                             if VehiclesInGarage == 0 then
-                                                ESX.TriggerServerCallback('esx_garaging:SellGarage', function()
-                                                    ESX.ShowNotification(Translations[Config.Translation]["SUCCES_LAPTOP"], false, true, 140)
-                                                    LeaveGarage()
-                                                    InsideGarage = nil
-                                                    UpdatePlayerGarages()
-                                                    UpdateBlips()
-												end, InsideGarage.GarageID)
+                                                if InsideGarage.GarageID ~= 1 then
+                                                    ESX.TriggerServerCallback('esx_garaging:SellGarage', function()
+                                                        ESX.ShowNotification(Translations[Config.Translation]["SUCCES_LAPTOP"], false, true, 140)
+                                                        LeaveGarage()
+                                                        InsideGarage = nil
+                                                        UpdatePlayerGarages()
+                                                        UpdateBlips()
+                                                    end, InsideGarage.GarageID)
+                                                else
+                                                    ESX.ShowNotification(Translations[Config.Translation]["ERROR_LAPTOP"], false, true, 140)
+                                                end
                                             else
                                                 ESX.ShowNotification(Translations[Config.Translation]["EMPTY_LAPTOP"], false, true, 140)
                                             end
