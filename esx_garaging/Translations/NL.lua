@@ -8,10 +8,10 @@
 ]]--
 
 Translations['NL'] = {
-	  ["BUY_GARAGE"] = "Druk op ~INPUT_CONTEXT~ om de garage te kopen!",
-	  ["MENU_BUY"] = "Garage Kopen",
-	  ["MONEY_BUY"] = "U heeft ~r~niet~w~ genoeg geld! U heeft nodig: ~r~€",
-	  ["SUCCES_BUY"] = "De garage is ~g~succesvol~w~ gekocht!",
+    ["BUY_GARAGE"] = "Druk op ~INPUT_CONTEXT~ om de garage te kopen!",
+    ["MENU_BUY"] = "Garage Kopen",
+    ["MONEY_BUY"] = "U heeft ~r~niet~w~ genoeg geld! U heeft nodig: ~r~€",
+    ["SUCCES_BUY"] = "De garage is ~g~succesvol~w~ gekocht!",
 
     ["ENTER_GARAGE"] = "Druk op ~INPUT_CONTEXT~ om de garage in te gaan!",
     ["LOADING_ENTER_GARAGE"] = "Aan het betreden...",
@@ -19,7 +19,7 @@ Translations['NL'] = {
     ["LOADING_LEAVE_GARAGE"] = "Aan het verlaten...",
 
     ["YES"] = "Yes",
-	  ["NO"] = "No",
+    ["NO"] = "No",
 
     ["ERROR_SPAWN"] = "~r~Er is iets fout gegaan bij het spawnen van het voertuig!",
     ["BLOCK_SPAWN"] = "~r~De garage deur is geblokkeerd! Zorg ervoor dat er genoeg plek is om het voertuig te spawnen.",
