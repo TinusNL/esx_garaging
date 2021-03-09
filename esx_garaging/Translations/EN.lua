@@ -34,6 +34,7 @@ Translations['EN'] = {
     ["IMPOUND_LAPTOP"] = "Impound",
     ["SELL_LAPTOP"] = "Sell Garage",
     ["SUCCES_LAPTOP"] = "The garage has ~g~succesfully~w~ been sold!",
+    ["ERROR_LAPTOP"] = "You ~r~can't~w~ sell your starter garage!",
     ["EMPTY_LAPTOP"] = "You first ~r~need~w~ to empty the garage!",
     ["MONEY_LAPTOP"] = "You ~r~don't~w~ have enough money! You need: ~r~€",
     ["SUCCES_LAPTOP"] = "The vehicle has ~g~succesfully~w~ been returned to your garage!",
