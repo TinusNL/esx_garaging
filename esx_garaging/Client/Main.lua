@@ -599,13 +599,13 @@ Citizen.CreateThread(function()
                                         ImpoundMenu.close()
                                         MenuOpened = false
                                     end)
-                                end, 
-                                function(Data, LaptopMenu)
-                                    LaptopMenu.close()
-                                    MenuOpened = false
                                 end)
                             end
-						end)
+						end, 
+                        function(Data, LaptopMenu)
+                            LaptopMenu.close()
+                            MenuOpened = false
+                        end)
 					end
 				end
 			else
