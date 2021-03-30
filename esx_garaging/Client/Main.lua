@@ -365,12 +365,12 @@ Citizen.CreateThread(function()
                                             if CurrentVehicle.garage == Index then
                                                 VehiclesInGarage = VehiclesInGarage + 1
 
-                                                if CurrentVehicle.plate.." " == VehiclePlate then
+                                                if CurrentVehicle.plate.." " == VehiclePlate or CurrentVehicle.plate == VehiclePlate then
                                                     CanGoIn = true
                                                 end
                                             end
 
-                                            if CurrentVehicle.plate.." " == VehiclePlate then
+                                            if CurrentVehicle.plate.." " == VehiclePlate or CurrentVehicle.plate == VehiclePlate then
                                                 OwnedVehicle = true
                                             end
                                         end
