@@ -32,8 +32,8 @@ function GetPlayerSteamId(xSource)
     local PlayerIdentifier = ""
 
     for Index, CurrentIdentifier in pairs(GetPlayerIdentifiers(xSource)) do
-        if string.sub(CurrentIdentifier, 1, string.len("steam:")) == "steam:" then
-            PlayerIdentifier = CurrentIdentifier
+        if string.sub(CurrentIdentifier, 1, string.len("license:")) == "license:" then
+            PlayerIdentifier = string.gsub(CurrentIdentifier, "license:", "")
         end
     end
 
