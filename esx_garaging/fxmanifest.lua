@@ -9,8 +9,7 @@ client_scripts {
 	-- Configuration
 	'Config.lua',
 	-- Translations
-	'Translations/EN.lua',
-	'Translations/NL.lua',
+	'Translations/*.lua',
 	-- Code
 	'Client/Main.lua',
 }
@@ -19,8 +18,7 @@ server_scripts {
 	-- Configuration
 	'Config.lua',
 	-- Translations
-	'Translations/EN.lua',
-	'Translations/NL.lua',
+	'Translations/*.lua',
 	-- Database
 	'@mysql-async/lib/MySQL.lua',
 	-- Code
