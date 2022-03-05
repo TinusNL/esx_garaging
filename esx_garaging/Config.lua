@@ -9,7 +9,7 @@
 
 Config = {
 
-    Translation = 'EN', -- Language used
+    Translation = 'EN', -- Language used (EN,PT,NL)
 
     Laptop = {
         MoneyType = true, --True= Bank | False= Cash
