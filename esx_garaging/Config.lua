@@ -9,7 +9,7 @@
 
 Config = {
 
-    Translation = 'EN', -- Language used
+    Translation = 'EN', -- Language used (EN, NL, PT)
 
     Laptop = {
         MoneyType = true, --True= Bank | False= Cash
@@ -18,6 +18,14 @@ Config = {
 
     MoneyType = true, --True= Bank | False= Cash
     SellPercentage = 75, -- Percentage you get back when selling a garage
+
+    PlayerIdentifiers = { -- New ESX_Vehicleshop uses license instead of steam
+        Tag = "steam:", -- Identifier tag to use. (steam:, license:, ip:, etc.)
+        Format = function(FoundIdentifier) -- Identifier format
+            return FoundIdentifier -- Default
+            -- return string.gsub(FoundIdentifier, "license:", "") -- License
+        end
+    },
 
     GarageTypes = { -- Garage types that can be used
         {

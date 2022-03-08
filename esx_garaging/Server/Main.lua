@@ -32,8 +32,8 @@ function GetPlayerSteamId(xSource)
     local PlayerIdentifier = ""
 
     for Index, CurrentIdentifier in pairs(GetPlayerIdentifiers(xSource)) do
-        if string.sub(CurrentIdentifier, 1, string.len("steam:")) == "steam:" then
-            PlayerIdentifier = CurrentIdentifier
+        if string.sub(CurrentIdentifier, 1, string.len(Config.PlayerIdentifiers.Tag)) == Config.PlayerIdentifiers.Tag then
+            PlayerIdentifier = Config.PlayerIdentifiers.Format(CurrentIdentifier)
         end
     end
 

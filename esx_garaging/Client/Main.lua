@@ -581,7 +581,7 @@ Citizen.CreateThread(function()
 
                                         ESX.TriggerServerCallback('esx_garaging:ReturnVehicle', function(Status)
                                             if Status == true then
-                                                ESX.ShowNotification(Translations[Config.Translation]["SUCCES_LAPTOP"], false, true, 140)
+                                                ESX.ShowNotification(Translations[Config.Translation]["SUCCES_IMPOUND_LAPTOP"], false, true, 140)
 
                                                 TriggerServerEvent('esx_garaging:SetStored', Data.current.value, true)
 

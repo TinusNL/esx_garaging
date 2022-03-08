@@ -37,5 +37,5 @@ Translations['NL'] = {
     ["ERROR_LAPTOP"] = "U kan ~r~niet~w~ de starters garage verkopen!",
     ["EMPTY_LAPTOP"] = "U ~r~moet~w~ eerst de garage leeg halen!",
     ["MONEY_LAPTOP"] = "U heeft ~r~niet~w~ genoeg geld! U heeft nodig: ~r~€",
-    ["SUCCES_LAPTOP"] = "Het voertuig is ~g~succesvol~w~ terug gebracht naar de garage!",
+    ["SUCCES_IMPOUND_LAPTOP"] = "Het voertuig is ~g~succesvol~w~ terug gebracht naar de garage!",
 }
